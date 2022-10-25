@@ -26,9 +26,8 @@ def create_app():
 
 # Helper Functions
 def register_blueprints(app):
-    @app.route("/")
-    def index():
-        return render_template("index.html")
+    from app.charts import routes
+    app.register_blueprint(routes.charts)
 
 
 def initialise_extensions(app, db):

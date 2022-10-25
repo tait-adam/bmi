@@ -129,3 +129,6 @@ dmypy.json
 .pyre/
 
 flask_session
+datasets/.DS_Store
+datasets
+.DS_Store
