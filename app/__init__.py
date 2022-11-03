@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -16,8 +16,8 @@ def create_app():
     app.config.from_object('config.Config')
 
     with app.app_context():
-        register_blueprints(app)
         initialise_extensions(app, db)
+        register_blueprints(app)
         configure_logging(app)
         register_error_handlers(app)
 
@@ -25,15 +25,15 @@ def create_app():
 
 
 # Helper Functions
-def register_blueprints(app):
-    from app.charts import routes
-    app.register_blueprint(routes.charts)
-
-
 def initialise_extensions(app, db):
     db.init_app(app)
     migrate.init_app(app, db)
     Session(app)
+
+
+def register_blueprints(app):
+    from app.charts import routes
+    app.register_blueprint(routes.charts)
 
 
 def configure_logging(app):

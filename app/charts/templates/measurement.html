@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Add Measurement
+{% endblock %}
+
+{% block main %}
+<!--
+TODO: Allow users to pick date rather than generate it for today
+TODO: Allow users to choose weather to work in imperial or metric
+-->
+<form action="/add-measurement" method="post">
+  <div class="mb-3">
+    <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="height" name="height"
+      placeholder="Height (cm)" type="text" required>
+  </div>
+  <div class="mb-3">
+    <input class="form-control mx-auto w-auto" id="weight" name="weight" placeholder="Weight (kg)" type="number" min=0
+      required>
+  </div>
+  <button class="btn btn-primary" type="submit">Add Measurement</button>
+</form>
+{% endblock %}
