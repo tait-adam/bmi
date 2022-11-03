@@ -10,14 +10,39 @@ TODO: Allow users to pick date rather than generate it for today
 TODO: Allow users to choose weather to work in imperial or metric
 -->
 <form action="/add-measurement" method="post">
-  <div class="mb-3">
-    <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="height" name="height"
-      placeholder="Height (cm)" type="text" required>
-  </div>
-  <div class="mb-3">
-    <input class="form-control mx-auto w-auto" id="weight" name="weight" placeholder="Weight (kg)" type="number" min=0
-      required>
-  </div>
-  <button class="btn btn-primary" type="submit">Add Measurement</button>
+  {{ form.csrf_token }}
+  <fieldset class="form-field">
+    {{ form.date.label }}
+    {{ form.date }}
+    {% if form.date.errors %}
+    <ul class="errors">
+      {% for error in form.date.errors %}
+      <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </fieldset>
+  <fieldset class="form-field">
+    {{ form.height.label }}
+    {{ form.height }}
+    {% if form.height.errors %}
+    <ul class="errors">
+      {% for error in form.height.errors %}
+      <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </fieldset>
+  <fieldset class="form-field">
+    {{ form.weight.label }}
+    {{ form.weight }}
+    {% if form.weight.errors %}
+    <ul class="errors">
+      {% for error in form.weight.errors %}
+      <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </fieldset>
+  {{ form.submit }}
 </form>
-{% endblock %}
