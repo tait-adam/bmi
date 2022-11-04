@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, request, redirect, flash
+from flask import Blueprint, render_template, redirect, flash
 from app.models import db, User, Measurement
+from app.forms import MeasurementForm
 
 import pandas as pd
 import plotly
@@ -72,16 +73,16 @@ def home():
 
 @charts.route("/add-measurement", methods=["GET", "POST"])
 def add_measurement():
-    if request.method == "POST":
+    """
+    BMI Calculator KG = Weight (kg) / Height (m)²
+    BMI = [Weight (lbs) / Height (inches)²] x 703
+    """
+    form = MeasurementForm()
+    if form.validate_on_submit():
         id = 1  # TODO: Get id from session
-        height = request.form.get('height')
-        weight = request.form.get('weight')
+        height = form.height.data
+        weight = form.weight.data
         bmi = float(weight)/((float(height)/100) ** 2)
-
-        # Metric BMI formula
-        # BMI Calculator KG = Weight (kg) / Height (m)²
-        # Imperial BMI formula
-        # BMI = [Weight (lbs) / Height (inches)²] x 703
 
         new_measurement = Measurement(
             user_id=id,
@@ -94,4 +95,4 @@ def add_measurement():
 
         return redirect("/")
     else:
-        return render_template("measurement.html")
+        return render_template("measurement.html", form=form)
