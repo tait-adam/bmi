@@ -2,10 +2,12 @@ from flask import Flask
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
 
 # Globally accessible libraries
 db = SQLAlchemy()
 migrate = Migrate()
+login_manager = LoginManager()
 
 
 def create_app():
@@ -28,12 +30,15 @@ def create_app():
 def initialise_extensions(app, db):
     db.init_app(app)
     migrate.init_app(app, db)
+    login_manager.init_app(app)
     Session(app)
 
 
 def register_blueprints(app):
-    from app.charts import routes
-    app.register_blueprint(routes.charts)
+    from app.charts import routes as charts_bp
+    from app.auth import routes as auth_bp
+    app.register_blueprint(charts_bp.charts)
+    app.register_blueprint(auth_bp.auth)
 
 
 def configure_logging(app):

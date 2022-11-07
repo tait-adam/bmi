@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, flash
+from flask_login import login_required
 from app.models import db, User, Measurement
 from app.forms import MeasurementForm
 
@@ -17,6 +18,7 @@ charts = Blueprint(
 
 
 @charts.route("/", methods=['GET', 'POST'])
+@login_required
 def home():
     """TODO: Add function doc"""
 
@@ -72,6 +74,7 @@ def home():
 
 
 @charts.route("/add-measurement", methods=["GET", "POST"])
+@login_required
 def add_measurement():
     """
     BMI Calculator KG = Weight (kg) / Height (m)²

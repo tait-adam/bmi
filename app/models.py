@@ -1,8 +1,10 @@
 from datetime import datetime
 from app import db
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     """Data model for user accounts"""
 
     __tablename__ = 'users'
@@ -10,7 +12,29 @@ class User(db.Model):
         db.Integer,
         primary_key=True,
         autoincrement=True,
+    )
+    name = db.Column(
+        db.String(100),
+        nullable=False,
+        unique=False
+    )
+    email = db.Column(
+        db.String(40),
+        unique=True,
         nullable=False
+    )
+    password = db.Column(
+        db.String(200),
+        primary_key=False,
+        unique=False,
+        nullable=False
+    )
+    created_on = db.Column(
+        db.DateTime,
+        index=False,
+        unique=False,
+        nullable=False,
+        default=datetime.utcnow
     )
     gender_id = db.Column(
         db.Integer,
@@ -23,6 +47,21 @@ class User(db.Model):
     )
     measurements = db.relationship('Measurement', back_populates='user')
     gender = db.relationship('Gender', back_populates='users')
+
+    def set_password(self, password):
+        """Create hashed password"""
+        self.password = generate_password_hash(
+            password,
+            method='sha256'
+        )
+
+    def check_password(self, password):
+        """Check hashed password."""
+        return check_password_hash(self.password, password)
+
+    # TODO: Add repr for other classes
+    def __repr__(self):
+        return '<User {}>'.format(self.email)
 
 
 class Gender(db.Model):

@@ -1,3 +1,7 @@
+# TODO: Move secret key to dotenv
+# NOTE: Secret key generation:
+# python -c 'import secrets; print(secrets.token_hex())'
+
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -21,3 +25,4 @@ class Config:
     # Session
     SESSION_PERMANENT = False
     SESSION_TYPE = "filesystem"
+    SECRET_KEY = 'b45c99a40877a33a7bfbdabdd696dff2eb9805e06562773dbb21253cd96ad4a0'  # NOQA
