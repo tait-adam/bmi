@@ -2,7 +2,7 @@ from flask import Blueprint, redirect, flash, render_template, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import RegistrationForm, LoginForm
 from app import login_manager, db
-from app.models import User
+from app.models import User, Gender
 
 user = Blueprint(
     'user',
@@ -24,6 +24,7 @@ def login():
         if user and user.check_password(password=form.password.data):
             login_user(user)
             next_page = request.args.get('next')
+            # TODO: validate value of next with is_safe_url(next)
             flash('Logged In')
             return redirect(next_page or url_for('charts.home'))
         flash('Invalid email/password combination')
@@ -75,13 +76,9 @@ def register():
 def load_user(user_id):
     """Check is user is logged-in on every page load"""
     if user_id is not None:
-        user = User.query.get(user_id)
-        print(user)
-        return user
-        # TODO: Move away from query statement
-        # return db.session.execute(
-        #     db.select(User).filter_by(id=user_id)
-        # ).first()
+        return db.session.execute(
+            db.select(User).filter_by(id=user_id)
+        ).scalar()
     return None
 
 
