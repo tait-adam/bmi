@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, flash
-from flask_login import login_required
-from app.models import db, User, Measurement
+from flask_login import login_required, current_user
+from app.models import db, Measurement
 from app.forms import MeasurementForm
 
 import pandas as pd
@@ -21,13 +21,6 @@ charts = Blueprint(
 def home():
     """TODO: Add function doc"""
 
-    # TODO: Get id from session
-    id = 1
-
-    record = db.session.execute(
-        db.select(User).filter_by(id=id)
-    ).scalar()
-
     # print("**************************************************************")
     # print(f"ID: {record.id}")
     # print(f"Gender: {record.gender.biology}")
@@ -37,7 +30,7 @@ def home():
     #     print(f"Weight: {measurement.bmi}")
     # print("**************************************************************")
 
-    if record.gender.id == 1:
+    if current_user.gender.id == 1:
         sex = "Males"
         df = pd.read_excel('datasets/bmi4age-datatables.xlsx', sheet_name=0)
     else:
@@ -81,13 +74,12 @@ def add_measurement():
     """
     form = MeasurementForm()
     if form.validate_on_submit():
-        id = 1  # TODO: Get id from session
         height = form.height.data
         weight = form.weight.data
         bmi = float(weight)/((float(height)/100) ** 2)
 
         new_measurement = Measurement(
-            user_id=id,
+            user_id=current_user.id,
             bmi=bmi
         )
         db.session.add(new_measurement)
