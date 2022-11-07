@@ -49,11 +49,13 @@ def register():
             db.select(User.id).filter_by(email=form.email.data)
         ).first()
         if existing_user is None:
+            gender_id = db.session.execute(
+                db.select(Gender.id).filter_by(biology=form.gender.data)
+            ).scalar()
             user = User(
                 name=form.username.data,
                 email=form.email.data,
-                # TODO: select gender_id from genders table
-                gender_id=1,
+                gender_id=gender_id,
                 birthday=form.birthday.data
             )
             user.set_password(form.password.data)

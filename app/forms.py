@@ -30,8 +30,8 @@ class RegistrationForm(FlaskForm):
         'Gender',
         [DataRequired()],
         choices=[
-            ('Male', 'male'),
-            ('Female', 'female'),
+            ('MALE', 'Male'),
+            ('FEMALE', 'Female'),
         ]
     )
     birthday = DateField(
