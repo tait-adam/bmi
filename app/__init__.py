@@ -35,10 +35,10 @@ def initialise_extensions(app, db):
 
 
 def register_blueprints(app):
-    from app.charts import routes as charts_bp
-    from app.auth import routes as auth_bp
-    app.register_blueprint(charts_bp.charts)
-    app.register_blueprint(auth_bp.auth)
+    from app import auth
+    from app import dashboard
+    app.register_blueprint(auth.user)
+    app.register_blueprint(dashboard.charts)
 
 
 def configure_logging(app):

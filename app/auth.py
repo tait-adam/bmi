@@ -4,14 +4,13 @@ from app.forms import RegistrationForm, LoginForm
 from app import login_manager, db
 from app.models import User
 
-auth = Blueprint(
-    'auth',
-    __name__,
-    template_folder='templates'
+user = Blueprint(
+    'user',
+    __name__
 )
 
 
-@auth.route("/login", methods=['GET', 'POST'])
+@user.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect("/")
@@ -33,15 +32,15 @@ def login():
         return render_template('login.html', form=form)
 
 
-@auth.route("/logout")
+@user.route("/logout")
 @login_required
 def logout():
     logout_user()
     flash('Successfully logged-out')
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('user.login'))
 
 
-@auth.route("/register", methods=['GET', 'POST'])
+@user.route("/register", methods=['GET', 'POST'])
 def register():
     """User registration page"""
     form = RegistrationForm()
@@ -88,4 +87,4 @@ def load_user(user_id):
 def unauthorised():
     """Redirect unauthorised users to Login page"""
     flash('You must be logged-in to view that page')
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('user.login'))

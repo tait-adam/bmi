@@ -2,7 +2,6 @@ from flask_wtf import FlaskForm
 from wtforms import DecimalField, DateField, SelectField, SubmitField, StringField, PasswordField  # NOQA
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
-# TODO: Go through WTFOrms and see if I can improve on validations
 # TODO: Add Recaptcha to registration and maybe login
 
 

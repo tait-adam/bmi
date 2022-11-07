@@ -12,8 +12,7 @@ import json
 
 charts = Blueprint(
     'charts',
-    __name__,
-    template_folder='templates'
+    __name__
 )
 
 
