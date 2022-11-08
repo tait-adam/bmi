@@ -1,8 +1,8 @@
 """Initial Migration
 
-Revision ID: 257e2b192212
+Revision ID: 96ea97c08768
 Revises:
-Create Date: 2022-11-07 14:54:09.444996
+Create Date: 2022-11-08 11:38:13.445663
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '257e2b192212'
+revision = '96ea97c08768'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -50,11 +50,11 @@ def upgrade():
                     )
     op.create_index(op.f('ix_measurements_timestamp'),
                     'measurements', ['timestamp'], unique=False)
+
     op.bulk_insert(genders, [
         {'id': 1, 'biology': 'MALE'},
         {'id': 2, 'biology': 'FEMALE'},
     ])
-
     # ### end Alembic commands ###
 
 
