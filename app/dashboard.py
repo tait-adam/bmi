@@ -5,8 +5,8 @@ from app.forms import MeasurementForm
 
 import pandas as pd
 import plotly
-# import plotly.graph_objects as go
-import plotly.express as px
+import plotly.graph_objects as go
+# import plotly.express as px
 import json
 
 
@@ -21,20 +21,9 @@ charts = Blueprint(
 def home():
     """TODO: Add function doc"""
 
-    # print("**************************************************************")
-    # print(f"ID: {record.id}")
-    # print(f"Gender: {record.gender.biology}")
-    # print(f"Birthday: {record.birthday}")
-    # print(f"Measurements: {record.measurements}")
-    # for measurement in record.measurements:
-    #     print(f"Weight: {measurement.bmi}")
-    # print("**************************************************************")
-
     if current_user.gender.id == 1:
-        sex = "Males"
         df = pd.read_excel('datasets/bmi4age-datatables.xlsx', sheet_name=0)
     else:
-        sex = "Females"
         df = pd.read_excel('datasets/bmi4age-datatables.xlsx', sheet_name=1)
 
     percentiles = [
@@ -42,22 +31,21 @@ def home():
         '75th', '85th', '90th', '95th', '97th'
     ]
 
-    fig = px.line(
-        df,
-        x="Age",
-        y=percentiles,
-        height=600,
-        title=f"BMI for Age in {sex}, 2-20",
-        labels={
-            "Age": "Age in Months",
-            "value": "BMI",
-            "variable": "Percentile"
-        },
-        template="plotly_white"
-    )
+    fig = go.Figure()
 
-    fig.update_yaxes(
-        showgrid=True
+    for pcent in percentiles:
+        fig.add_trace(go.Scatter(
+            x=df['Age'],
+            y=df[pcent],
+            mode='lines',
+            name=pcent
+        ))
+    fig.update_layout(
+        title=f"Chart for {current_user.name}",
+        template="plotly_white",
+        xaxis_title="Age in Months",
+        yaxis_title="BMI",
+        height=650
     )
 
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
