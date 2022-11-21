@@ -5,35 +5,47 @@ Login
 {% endblock %}
 
 {% block main %}
-
-<form action="/login" method="post">
-  {{ form.csrf_token }}
-  <fieldset class="form-field">
-    {{ form.email.label }}
-    {{ form.email(placeholder='you@example.com') }}
-    {% if form.email.errors %}
-    <ul class="errors">
-      {% for error in form.email.errors %}
-      <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-  </fieldset>
-  <fieldset class="form-field">
-    {{ form.password.label }}
-    {{ form.password }}
-    {% if form.password.errors %}
-    <ul class="errors">
-      {% for error in form.password.errors %}
-      <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-  </fieldset>
-  {{ form.submit }}
-</form>
-<div class="login-register">
-  <span>Don't have an account?</span>
-  <a href="{{ url_for('user.register') }}">Register</a>
-</div>
+<section class="section">
+  <form action="/login" method="post" class="container column is-half">
+    {{ form.csrf_token }}
+    <fieldset class="field">
+      <!-- TODO: Add font-awesome fonts to forms -->
+      {{ form.email.label(class="label") }}
+      <p class="control has-icons-left">
+        {{ form.email(class="input", placeholder='you@example.com') }}
+        <span class="icon is-small is-left">
+          <i class="fas fa-envelope"></i>
+        </span>
+      </p>
+      {% if form.email.errors %}
+      <ul class="errors">
+        {% for error in form.email.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </fieldset>
+    <fieldset class="field">
+      {{ form.password.label(class="label") }}
+      <p class="control has-icons-left">
+        {{ form.password(class="input") }}
+        <span class="icon is-small is-left">
+          <i class="fas fa-lock"></i>
+        </span>
+      </p>
+      {% if form.password.errors %}
+      <ul class="errors">
+        {% for error in form.password.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </fieldset>
+    {{ form.submit(class="button is-primary") }}
+  </form>
+  <div class="container column is-half">
+    <span>Don't have an account?</span>
+    <a href="{{ url_for('user.register') }}">Register</a>
+  </div>
+</section>
 {% endblock %}

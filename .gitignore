@@ -133,4 +133,5 @@ datasets/.DS_Store
 datasets
 .DS_Store
 assets
-.direnv/python-3.10.7
+.direnv/**
+bmi.db

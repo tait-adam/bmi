@@ -6,80 +6,115 @@ Register
 
 {% block main %}
 
-<form action="/register" method="post">
-  {{ form.csrf_token }}
-  <fieldset class="form-field">
-    {{ form.username.label }}
-    {{ form.username(placeholder='Username') }}
-    {% if form.username.errors %}
-    <ul class="errors">
-      {% for error in form.username.errors %}
-      <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-  </fieldset>
-  <fieldset class="form-field">
-    {{ form.email.label }}
-    {{ form.email(placeholder='youremail@example.com') }}
-    {% if form.email.errors %}
-    <ul class="errors">
-      {% for error in form.email.errors %}
-      <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-  </fieldset>
-  <fieldset class="form-field">
-    {{ form.birthday.label }}
-    {{ form.birthday }}
-    {% if form.birthday.errors %}
-    <ul class="errors">
-      {% for error in form.birthday.errors %}
-      <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-  </fieldset>
-  <fieldset class="form-field">
-    {{ form.gender.label }}
-    {{ form.gender }}
-    {% if form.gender.errors %}
-    <ul class="errors">
-      {% for error in form.gender.errors %}
-      <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-  </fieldset>
-  <fieldset class="form-field">
-    {{ form.password.label }}
-    {{ form.password }}
-    {% if form.password.errors %}
-    <ul class="errors">
-      {% for error in form.password.errors %}
-      <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-  </fieldset>
-  <fieldset class="form-field">
-    {{ form.confirmation.label }}
-    {{ form.confirmation }}
-    {% if form.confirmation.errors %}
-    <ul class="errors">
-      {% for error in form.confirmation.errors %}
-      <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-  </fieldset>
-  {{ form.submit }}
-</form>
-<div class="login-register">
-  <div>
-    <span>Already have an account?</span>
-    <a href="{{ url_for('user.login') }}">Log in.</a>
+<section class="section">
+  <form action="/register" method="post" class="column container is-half">
+    {{ form.csrf_token }}
+    <fieldset class="field">
+      {{ form.username.label(class="label") }}
+      <p class="control has-icons-left">
+        {{ form.username(class="input", placeholder='Username') }}
+        <span class="icon is-small is-left">
+          <i class="fas fa-user"></i>
+        </span>
+      </p>
+      {% if form.username.errors %}
+      <ul class="errors">
+        {% for error in form.username.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </fieldset>
+    <fieldset class="field">
+      {{ form.email.label(class="label") }}
+      <p class="control has-icons-left">
+        {{ form.email(class="input", placeholder='youremail@example.com') }}
+        <span class="icon is-small is-left">
+          <i class="fas fa-envelope"></i>
+        </span>
+      </p>
+      {% if form.email.errors %}
+      <ul class="errors">
+        {% for error in form.email.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </fieldset>
+    <fieldset class="field">
+      {{ form.birthday.label(class="label") }}
+      <p class="control has-icons-left">
+        {{ form.birthday(class="input") }}
+        <span class="icon is-small is-left">
+          <i class="fas fa-calendar"></i>
+        </span>
+      </p>
+      {% if form.birthday.errors %}
+      <ul class="errors">
+        {% for error in form.birthday.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </fieldset>
+    <fieldset class="field">
+      {{ form.gender.label(class="label") }}
+      <div class="control has-icons-left">
+        <div class="select">
+          {{ form.gender(class="input") }}
+        </div>
+        <div class="icon is-small is-left">
+          <i class="fas fa-person"></i>
+          <i class="fas fa-person-dress"></i>
+        </div>
+      </div>
+      {% if form.gender.errors %}
+      <ul class="errors">
+        {% for error in form.gender.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </fieldset>
+    <fieldset class="field">
+      {{ form.password.label(class="label") }}
+      <p class="control has-icons-left">
+        {{ form.password(class="input") }}
+        <span class="icon is-small is-left">
+          <i class="fas fa-lock"></i>
+        </span>
+      </p>
+      {% if form.password.errors %}
+      <ul class="errors">
+        {% for error in form.password.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </fieldset>
+    <fieldset class="field">
+      {{ form.confirmation.label(class="label") }}
+      <p class="control has-icons-left">
+        {{ form.confirmation(class="input") }}
+        <span class="icon is-small is-left">
+          <i class="fas fa-lock"></i>
+        </span>
+      </p>
+      {% if form.confirmation.errors %}
+      <ul class="errors">
+        {% for error in form.confirmation.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </fieldset>
+    {{ form.submit(class="button is-primary") }}
+  </form>
+  <div class="container column is-half">
+    <div>
+      <span>Already have an account?</span>
+      <a href="{{ url_for('user.login') }}">Log in.</a>
+    </div>
   </div>
-</div>
-{% endblock %}
+  <section>
+    {% endblock %}
