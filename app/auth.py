@@ -25,7 +25,7 @@ def login():
             login_user(user)
             next_page = request.args.get('next')
             # TODO: validate value of next with is_safe_url(next)
-            flash('Logged In')
+            flash('Successfully logged-in')
             return redirect(next_page or url_for('charts.home'))
         flash('Invalid email/password combination')
         return redirect("/login")
