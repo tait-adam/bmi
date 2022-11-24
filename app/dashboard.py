@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template, redirect, flash
+from flask import Blueprint, render_template, redirect, flash, session
 from flask_login import login_required, current_user
 from app.models import db, Measurement
-from app.forms import MeasurementForm
+from app.forms import ImperialMeasurementForm, MetricMeasurementForm
 
 import pandas as pd
 import plotly
@@ -20,6 +20,9 @@ charts = Blueprint(
 @login_required
 def home():
     """TODO: Add function doc"""
+
+    if not session.get('system'):
+        session['system'] = 'metric'
 
     if current_user.gender.id == 1:
         df = pd.read_excel('datasets/bmi4age-datatables.xlsx', sheet_name=0)
@@ -40,6 +43,7 @@ def home():
             mode='lines',
             name=pcent
         ))
+
     fig.update_layout(
         title=f"Chart for {current_user.name}",
         template="plotly_white",
@@ -53,18 +57,31 @@ def home():
     return render_template("index.html", graphJSON=graphJSON)
 
 
-@charts.route("/add-measurement", methods=["GET", "POST"])
+@charts.route("/add-measurement/<system>", methods=["GET", "POST"])
 @login_required
-def add_measurement():
+def add_measurement(system):
     """
     BMI Calculator KG = Weight (kg) / Height (m)²
     BMI = [Weight (lbs) / Height (inches)²] x 703
     """
-    form = MeasurementForm()
+
+    session['system'] = system
+
+    if session['system'] == 'imperial':
+        form = ImperialMeasurementForm()
+
+        def calculate_bmi(height, weight):
+            return 703 * float(weight)/(float(height) ** 2)
+    else:
+        form = MetricMeasurementForm()
+
+        def calculate_bmi(height, weight):
+            return float(weight)/((float(height)/100) ** 2)
+
     if form.validate_on_submit():
         height = form.height.data
         weight = form.weight.data
-        bmi = float(weight)/((float(height)/100) ** 2)
+        bmi = calculate_bmi(height, weight)
 
         new_measurement = Measurement(
             user_id=current_user.id,

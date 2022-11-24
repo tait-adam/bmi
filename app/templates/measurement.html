@@ -9,7 +9,7 @@ Add Measurement
 TODO: Allow users to choose whether to work in imperial or metric
 -->
 <section class="section">
-  <form action="/add-measurement" method="post" class="container column is-half">
+  <form action="/add-measurement/{{ session['system'] }}" method="post" class="container column is-half">
     {{ form.csrf_token }}
     <fieldset class="field">
       {{ form.date.label(class="label") }}
@@ -62,5 +62,12 @@ TODO: Allow users to choose whether to work in imperial or metric
     </fieldset>
     {{ form.submit(class="button is-primary") }}
   </form>
+  <div class="container column is-half">
+    {% if session['system'] == 'imperial' %}
+    <a href="{{ url_for('charts.add_measurement', system='metric') }}">Switch to Metric</a>
+    {% else %}
+    <a href="{{ url_for('charts.add_measurement', system='imperial') }}">Switch to Imperial</a>
+    {% endif %}
+  </div>
 </section>
 {% endblock %}

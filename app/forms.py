@@ -10,15 +10,33 @@ class MeasurementForm(FlaskForm):
         'Date of Measurement',
         [DataRequired()]
     )
+    submit = SubmitField('Add Measurement')
+
+
+class ImperialMeasurementForm(MeasurementForm):
+    height = DecimalField(
+        'Height (inches)',
+        [DataRequired()],
+        render_kw={"placeholder": "Height (inches)"}
+    )
+    weight = DecimalField(
+        'Weight (lbs)',
+        [DataRequired()],
+        render_kw={"placeholder": "Weight (lbs)"}
+    )
+
+
+class MetricMeasurementForm(MeasurementForm):
     height = DecimalField(
         'Height (cm)',
-        [DataRequired()]
+        [DataRequired()],
+        render_kw={"placeholder": "Height (cm)"}
     )
     weight = DecimalField(
         'Weight (kg)',
-        [DataRequired()]
+        [DataRequired()],
+        render_kw={"placeholder": "Weight (kg)"}
     )
-    submit = SubmitField('Add Measurement')
 
 
 class RegistrationForm(FlaskForm):
