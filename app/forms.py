@@ -39,7 +39,22 @@ class MetricMeasurementForm(MeasurementForm):
     )
 
 
-class RegistrationForm(FlaskForm):
+class LoginForm(FlaskForm):
+    email = StringField(
+        'Email',
+        validators=[
+            DataRequired(),
+            Email(message='Enter a valid email.')
+        ]
+    )
+    password = PasswordField(
+        'Password',
+        [DataRequired()]
+    )
+    submit = SubmitField('Login')
+
+
+class RegistrationForm(LoginForm):
     username = StringField(
         'Username',
         [DataRequired()]
@@ -56,21 +71,6 @@ class RegistrationForm(FlaskForm):
         'Your Birthday',
         [DataRequired()]
     )
-    email = StringField(
-        'Email',
-        validators=[
-            Length(min=6),
-            Email(message='Enter a valid email address.'),
-            DataRequired()
-        ]
-    )
-    password = PasswordField(
-        'Password',
-        validators=[
-            Length(min=6, message='Select a stronger password'),
-            DataRequired()
-        ]
-    )
     confirmation = StringField(
         'Confirm Your Password',
         validators=[
@@ -78,19 +78,3 @@ class RegistrationForm(FlaskForm):
             DataRequired()
         ]
     )
-    submit = SubmitField('Register')
-
-
-class LoginForm(FlaskForm):
-    email = StringField(
-        'Email',
-        validators=[
-            DataRequired(),
-            Email(message='Enter a valid email.')
-        ]
-    )
-    password = PasswordField(
-        'Password',
-        [DataRequired()]
-    )
-    submit = SubmitField('Login')
