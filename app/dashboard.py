@@ -94,11 +94,13 @@ def add_measurement(system):
     if form.validate_on_submit():
         height = form.height.data
         weight = form.weight.data
+        date = form.date.data
         bmi = calculate_bmi(height, weight)
 
         new_measurement = Measurement(
             user_id=current_user.id,
-            bmi=bmi
+            bmi=bmi,
+            timestamp=date
         )
         db.session.add(new_measurement)
         db.session.commit()
