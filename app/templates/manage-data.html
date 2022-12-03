@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Manage Data
+{% endblock %}
+
+{% block main %}
+<section class="section">
+  <table class="table" class="container column is-half">
+    <thead>
+      <tr>
+        <th>Date of Measurement</th>
+        <th>BMI</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for d in data %}
+      <tr>
+        <td>{{ d.timestamp }}</td>
+        <td>{{ d.bmi }}</td>
+        <td>
+          <form action="/delete-data/{{ d.id }}" method="post">
+            {{ form.csrf_token }}
+            {{ form.submit(class="button is-danger") }}
+          </form>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

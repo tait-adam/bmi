@@ -1,7 +1,20 @@
-from flask import Blueprint, render_template, redirect, flash, session
+from flask import (
+    Blueprint,
+    flash,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for
+)
 from flask_login import login_required, current_user
-from app.models import db, Measurement
-from app.forms import ImperialMeasurementForm, MetricMeasurementForm
+from dateutil.relativedelta import relativedelta
+from app.models import db, Measurement, User
+from app.forms import (
+    ImperialMeasurementForm,
+    MetricMeasurementForm,
+    DeleteDataForm
+)
 
 import pandas as pd
 import plotly
@@ -95,3 +108,32 @@ def add_measurement(system):
         return redirect("/")
     else:
         return render_template("measurement.html", form=form)
+
+
+@charts.route("/manage-data", methods=["GET"])
+@login_required
+def manage_data():
+    form = DeleteDataForm()
+    measurements = db.session.execute(
+        db.select(Measurement).filter_by(user_id=current_user.id)
+    ).scalars()
+
+    return render_template(
+        "manage-data.html",
+        form=form,
+        data=measurements
+    )
+
+
+@charts.route("/delete-data/<id>", methods=["POST"])
+@login_required
+def delete_data(id):
+    if request.method == "POST":
+        table_entry = db.session.execute(
+            db.select(Measurement).filter_by(id=id)
+        ).scalar()
+        db.session.delete(table_entry)
+        db.session.commit()
+        return redirect(url_for('charts.manage_data'))
+    else:
+        return redirect("/")

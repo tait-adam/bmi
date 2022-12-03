@@ -1,6 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import DecimalField, DateField, SelectField, SubmitField, StringField, PasswordField  # NOQA
-from wtforms.validators import DataRequired, Email, EqualTo, Length
+from wtforms import (
+    DateField,
+    DecimalField,
+    PasswordField,
+    SelectField,
+    StringField,
+    SubmitField
+)
+from wtforms.validators import DataRequired, Email, EqualTo
 
 # TODO: Add Recaptcha to registration and maybe login
 
@@ -78,3 +85,7 @@ class RegistrationForm(LoginForm):
             DataRequired()
         ]
     )
+
+
+class DeleteDataForm(FlaskForm):
+    submit = SubmitField('Delete')
