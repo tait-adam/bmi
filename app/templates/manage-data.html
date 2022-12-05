@@ -6,7 +6,7 @@ Manage Data
 
 {% block main %}
 <section class="section">
-  <table class="table" class="container column is-half">
+  <table class="table container is-fullwidth is-narrow">
     <thead>
       <tr>
         <th>Date of Measurement</th>
@@ -17,8 +17,8 @@ Manage Data
     <tbody>
       {% for d in data %}
       <tr>
-        <td>{{ d.timestamp }}</td>
-        <td>{{ d.bmi }}</td>
+        <td>{{ d.timestamp.strftime('%d %b %Y') }}</td>
+        <td>{{ d.bmi | round(2, 'common') }}</td>
         <td>
           <form action="/delete-data/{{ d.id }}" method="post">
             {{ form.csrf_token }}
