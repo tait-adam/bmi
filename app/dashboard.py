@@ -92,6 +92,7 @@ def add_measurement(system):
             return float(weight)/((float(height)/100) ** 2)
 
     if form.validate_on_submit():
+        date = form.date.data
         height = form.height.data
         weight = form.weight.data
         date = form.date.data
