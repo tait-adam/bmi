@@ -42,6 +42,24 @@ def home():
     else:
         df = pd.read_excel('datasets/bmi4age-datatables.xlsx', sheet_name=1)
 
+    user_measurements = db.session.execute(
+        db.select(Measurement).filter_by(user_id=current_user.id)
+    ).scalars()
+
+    user_birthday = db.session.execute(
+        db.select(User.birthday).filter_by(id=current_user.id)
+    ).scalar()
+
+    # To calculate number of months, disregard number of days
+    bmi_measurements = []
+    ages_in_months = []
+
+    for m in user_measurements:
+        diff = relativedelta(m.timestamp, user_birthday)
+        age_in_months = diff.years * 12 + diff.months
+        bmi_measurements.append(m.bmi)
+        ages_in_months.append(age_in_months)
+
     percentiles = [
         '3rd', '5th', '10th', '25th', '50th',
         '75th', '85th', '90th', '95th', '97th'
@@ -56,6 +74,11 @@ def home():
             mode='lines',
             name=pcent
         ))
+
+    fig.add_trace(go.Scatter(
+        x=ages_in_months,
+        y=bmi_measurements
+    ))
 
     fig.update_layout(
         title=f"Chart for {current_user.name}",
